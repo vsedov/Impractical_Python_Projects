@@ -11,8 +11,8 @@ def find_palingrams():
     pali_list = []
     for word in word_list:
         end = len(word)
-        rev_word = word[::-1]
         if end > 1:
+            rev_word = word[::-1]
             for i in range(end):
                 if word[i:] == rev_word[:end-i]and rev_word[end-i:]in word_list:
                     pali_list.append((word, rev_word[end-i:]))
@@ -26,9 +26,9 @@ palingrams = find_palingrams()
 palingrams_sorted = sorted(palingrams)
 
 #display list of palingrams
-print("Number of palingrams = {}\n\n".format(len(palingrams_sorted)))
+print(f"Number of palingrams = {len(palingrams_sorted)}\n\n")
 for first, second in palingrams_sorted:
-    print("{} {}".format(first, second))
+    print(f"{first} {second}")
 
 end_time = time.time()
-print("Runtime for this program was {} seconds.".format(end_time - start_time))
+print(f"Runtime for this program was {end_time - start_time} seconds.")

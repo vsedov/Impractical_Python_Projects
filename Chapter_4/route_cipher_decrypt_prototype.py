@@ -1,4 +1,5 @@
 """Decrypt a route cipher by inputing matrix & key."""
+
 ciphertext = "16 12 8 4 0 1 5 9 13 17 18 14 10 6 2 3 7 11 15 19"
 
 # split elements into words, not letters
@@ -27,14 +28,14 @@ for k in key_int:
     start += ROWS
     stop += ROWS
 
-print("\nciphertext = {}".format(ciphertext))
+print(f"\nciphertext = {ciphertext}")
 print("\ntranslation matrix =", *translation_matrix, sep="\n")
-print("\nkey length= {}".format(len(key_int)))
+print(f"\nkey length= {len(key_int)}")
 
 # loop through nested lists popping off last item to new list:
-for i in range(ROWS):
+for _ in range(ROWS):
     for col_items in translation_matrix:
         word = str(col_items.pop())
-        plaintext += word + ' '
+        plaintext += f'{word} '
 
-print("\nplaintext = {}".format(plaintext))
+print(f"\nplaintext = {plaintext}")

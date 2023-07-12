@@ -1,4 +1,5 @@
 """Hide a null cipher within a list of names using a variable pattern."""
+
 import load_dictionary
 
 # write a short message and use no punctuation or numbers!
@@ -8,10 +9,7 @@ message = "".join(message.split())
 # open name file
 names = load_dictionary.load('supporters.txt')
 
-name_list = []
-
-# start list with null word not used in cipher
-name_list.append(names[0])
+name_list = [names[0]]
 
 # add letter of null cipher to 2nd letter of name, then 3rd, then repeat
 count = 1

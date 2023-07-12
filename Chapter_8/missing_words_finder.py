@@ -20,8 +20,7 @@ def main():
 def load_haiku(filename):
     """Open and return training corpus of haiku as a set."""
     with open(filename) as in_file:
-        haiku = set(in_file.read().replace('-', ' ').split())
-        return haiku
+        return set(in_file.read().replace('-', ' ').split())
 
 def cmudict_missing(word_set):
     """Find and return words in word set missing from cmudict."""
@@ -34,9 +33,8 @@ def cmudict_missing(word_set):
             exceptions.add(word)
     print("\nexceptions:")
     print(*exceptions, sep='\n')
-    print("\nNumber of unique words in haiku corpus = {}".format(len(word_set)))
-    print("Number of words in corpus not in cmudict = {}"
-          .format(len(exceptions)))
+    print(f"\nNumber of unique words in haiku corpus = {len(word_set)}")
+    print(f"Number of words in corpus not in cmudict = {len(exceptions)}")
     membership = (1 - (len(exceptions) / len(word_set))) * 100
     print("cmudict membership = {:.1f}{}".format(membership, '%'))
     return exceptions
@@ -47,12 +45,12 @@ def make_exceptions_dict(exceptions_set):
     print("Input # syllables in word. Mistakes can be corrected at end. \n")
     for word in exceptions_set:
         while True:
-            num_sylls = input("Enter number syllables in {}: ".format(word))
+            num_sylls = input(f"Enter number syllables in {word}: ")
             if num_sylls.isdigit():
                 break
             else:
-                print("                   Not a valid answer!", file=sys.stderr)                    
-        missing_words[word] = int(num_sylls)              
+                print("                   Not a valid answer!", file=sys.stderr)
+        missing_words[word] = int(num_sylls)
     print()
     pprint.pprint(missing_words, width=1)
 
@@ -64,17 +62,16 @@ def make_exceptions_dict(exceptions_set):
     """)
 
     while True:
-        choice = input("\nEnter choice: ")   
+        choice = input("\nEnter choice: ")
         if choice == '0':
             break
         elif choice == '1':
             word = input("\nWord to add or change: ")
-            missing_words[word] = int(input("Enter number syllables in {}: "
-                                            .format(word)))
+            missing_words[word] = int(input(f"Enter number syllables in {word}: "))
         elif choice == '2':
             word = input("\nEnter word to delete: ")
             missing_words.pop(word, None)
-            
+
     print("\nNew words or syllable changes:")
     pprint.pprint(missing_words, width=1)
 
@@ -83,9 +80,8 @@ def make_exceptions_dict(exceptions_set):
 def save_exceptions(missing_words):
     """Save exceptions dictionary as json file."""
     json_string = json.dumps(missing_words)
-    f = open('missing_words.json', 'w')
-    f.write(json_string)
-    f.close()
+    with open('missing_words.json', 'w') as f:
+        f.write(json_string)
     print("\nFile saved as missing_words.json")
     
 if __name__ == '__main__':

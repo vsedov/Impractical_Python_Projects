@@ -1,14 +1,16 @@
 """Input cipher key string, get user input on route direction as dict value."""
+
 col_order = """1 3 4 2"""
-key = dict()
+key = {}
 cols = [int(i) for i in col_order.split()]
 for col in cols:
     while True:
-        key[col] = input("Direction to read Column {} (u = up, d = down): "
-                         .format(col).lower())
-        if key[col] == 'u' or key[col] == 'd':
+        key[col] = input(
+            f"Direction to read Column {col} (u = up, d = down): ".lower()
+        )
+        if key[col] in ['u', 'd']:
             break
         else:
             print("Input should be 'u' or 'd'")
 
-    print("{}, {}".format(col, key[col]))
+    print(f"{col}, {key[col]}")

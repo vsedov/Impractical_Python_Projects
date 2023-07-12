@@ -23,8 +23,10 @@ if NUM_RATS % 2 != 0:
 
 def populate(num_rats, min_wt, max_wt, mode_wt):
     """Initialize a population with a triangular distribution of weights."""
-    return [int(random.triangular(min_wt, max_wt, mode_wt))\
-            for i in range(num_rats)]
+    return [
+        int(random.triangular(min_wt, max_wt, mode_wt))
+        for _ in range(num_rats)
+    ]
 
 def fitness(population, goal):
     """Measure population fitness based on an attribute mean vs target."""
@@ -67,10 +69,10 @@ def main():
 
     parents = populate(NUM_RATS, INITIAL_MIN_WT, INITIAL_MAX_WT,
                        INITIAL_MODE_WT)
-    print("initial population weights = {}".format(parents))
+    print(f"initial population weights = {parents}")
     popl_fitness = fitness(parents, GOAL)
-    print("initial population fitness = {}".format(popl_fitness))
-    print("number to retain = {}".format(NUM_RATS))
+    print(f"initial population fitness = {popl_fitness}")
+    print(f"number to retain = {NUM_RATS}")
 
     ave_wt = []
 
@@ -85,13 +87,13 @@ def main():
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
 
-    print("average weight per generation = {}".format(ave_wt))
-    print("\nnumber of generations = {}".format(generations))
-    print("number of years = {}".format(int(generations / LITTERS_PER_YEAR)))
+    print(f"average weight per generation = {ave_wt}")
+    print(f"\nnumber of generations = {generations}")
+    print(f"number of years = {int(generations / LITTERS_PER_YEAR)}")
 
 if __name__ == '__main__':
     start_time = time.time()
     main()
     end_time = time.time()
     duration = end_time - start_time
-    print("\nRuntime for this program was {} seconds.".format(duration))                                                                        
+    print(f"\nRuntime for this program was {duration} seconds.")                                                                        

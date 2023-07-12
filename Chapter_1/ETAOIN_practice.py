@@ -1,4 +1,5 @@
 """Map letters from string into dictionary & print bar chart of frequency."""
+
 import sys
 import pprint
 from collections import defaultdict
@@ -19,5 +20,5 @@ for character in text:
 # pprint lets you print stacked output
 print("\nYou may need to stretch console window if text wrapping occurs.\n")
 print("text = ", end='')
-print("{}\n".format(text), file=sys.stderr)
+print(f"{text}\n", file=sys.stderr)
 pprint.pprint(mapped, width=110)

@@ -27,11 +27,11 @@ def main():
 
 def prep_words(name, word_list_ini):
     """Prep word list for finding anagrams."""
-    print("length initial word_list = {}".format(len(word_list_ini)))
+    print(f"length initial word_list = {len(word_list_ini)}")
     len_name = len(name)
     word_list = [word.lower() for word in word_list_ini
                  if len(word) == len_name]
-    print("length of new word_list = {}".format(len(word_list)))
+    print(f"length of new word_list = {len(word_list)}")
     return word_list
 
 def cv_map_words(word_list):
@@ -39,12 +39,7 @@ def cv_map_words(word_list):
     vowels = 'aeiouy'
     cv_mapped_words = []
     for word in word_list:
-        temp = ''
-        for letter in word:
-            if letter in vowels:
-                temp += 'v'
-            else:
-                temp += 'c'
+        temp = ''.join('v' if letter in vowels else 'c' for letter in word)
         cv_mapped_words.append(temp)
     # determine number of UNIQUE c-v patterns
     total = len(set(cv_mapped_words))
@@ -53,28 +48,21 @@ def cv_map_words(word_list):
     # get number of items in target fraction
     n = int(total * target)
     count_pruned = Counter(cv_mapped_words).most_common(total - n)
-    filtered_cv_map = set()
-    for pattern, count in count_pruned:
-        filtered_cv_map.add(pattern)
-    print("length filtered_cv_map = {}".format(len(filtered_cv_map)))
+    filtered_cv_map = {pattern for pattern, count in count_pruned}
+    print(f"length filtered_cv_map = {len(filtered_cv_map)}")
     return filtered_cv_map
     
 def cv_map_filter(name, filtered_cv_map):
     """Remove permutations of words based on unlikely cons-vowel combos."""
     perms = {''.join(i) for i in permutations(name)}
-    print("length of initial permutations set = {}".format(len(perms)))
+    print(f"length of initial permutations set = {len(perms)}")
     vowels = 'aeiouy'
     filter_1 = set()
     for candidate in perms:
-        temp = ''
-        for letter in candidate:
-            if letter in vowels:
-                temp += 'v'
-            else:
-                temp += 'c'
+        temp = ''.join('v' if letter in vowels else 'c' for letter in candidate)
         if temp in filtered_cv_map:
-            filter_1.add(candidate)                
-    print("# choices after filter_1 = {}".format(len(filter_1)))
+            filter_1.add(candidate)
+    print(f"# choices after filter_1 = {len(filter_1)}")
     return filter_1
 
 def trigram_filter(filter_1, trigrams_filtered):
@@ -85,8 +73,8 @@ def trigram_filter(filter_1, trigrams_filtered):
             triplet = triplet.lower()
             if triplet in candidate: 
                 filtered.add(candidate)
-    filter_2 = filter_1 - filtered        
-    print("# of choices after filter_2 = {}".format(len(filter_2)))
+    filter_2 = filter_1 - filtered
+    print(f"# of choices after filter_2 = {len(filter_2)}")
     return filter_2
 
 def letter_pair_filter(filter_2):
@@ -103,22 +91,19 @@ def letter_pair_filter(filter_2):
         for fp in first_pair_rejects:
             if candidate.startswith(fp):
                 filtered.add(candidate)
-    filter_3 = filter_2 - filtered    
-    print("# of choices after filter_3 = {}".format(len(filter_3)))
+    filter_3 = filter_2 - filtered
+    print(f"# of choices after filter_3 = {len(filter_3)}")
     if 'voldemort' in filter_3:
         print("Voldemort found!", file=sys.stderr)
     return filter_3
 
 def view_by_letter(name, filter_3):
     """Filter to anagrams starting with input letter."""
-    print("Remaining letters = {}".format(name))
+    print(f"Remaining letters = {name}")
     first = input("select a starting letter or press Enter to see all: ")
-    subset = []
-    for candidate in filter_3:
-        if candidate.startswith(first):
-            subset.append(candidate)
+    subset = [candidate for candidate in filter_3 if candidate.startswith(first)]
     print(*sorted(subset), sep='\n')
-    print("Number of choices starting with {} = {}".format(first, len(subset)))
+    print(f"Number of choices starting with {first} = {len(subset)}")
     try_again = input("Try again? (Press Enter else any other key to Exit):")
     if try_again.lower() == '':
         view_by_letter(name, filter_3)

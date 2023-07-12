@@ -18,8 +18,10 @@ from itertools import permutations, product
 def perms(num_cols):
     """Take number of columns integer & generate pos & neg permutations."""
     results = []
-    columns = [x for x in range(1, num_cols+1)]
+    columns = list(range(1, num_cols+1))
     for perm in permutations(columns):
-        for signs in product([-1, 1], repeat=len(columns)):
-            results.append([i*sign for i, sign in zip(perm, signs)])
+        results.extend(
+            [i * sign for i, sign in zip(perm, signs)]
+            for signs in product([-1, 1], repeat=len(columns))
+        )
     return results

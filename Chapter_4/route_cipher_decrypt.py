@@ -53,31 +53,28 @@ key = """ -1 2 -3 4 """
 
 def main():
     """Run program and print decrypted plaintext."""
-    print("\nCiphertext = {}".format(ciphertext))
-    print("Trying {} columns".format(COLS))
-    print("Trying {} rows".format(ROWS))
-    print("Trying key = {}".format(key))
+    print(f"\nCiphertext = {ciphertext}")
+    print(f"Trying {COLS} columns")
+    print(f"Trying {ROWS} rows")
+    print(f"Trying key = {key}")
 
     # split elements into words, not letters
     cipherlist = list(ciphertext.split())
 
-    validate_col_row(cipherlist)       
+    validate_col_row(cipherlist)
     key_int = key_to_int(key)
     translation_matrix = build_matrix(key_int, cipherlist)
     plaintext = decrypt(translation_matrix)       
 
-    print("Plaintext = {}".format(plaintext))
+    print(f"Plaintext = {plaintext}")
     print()
 
 def validate_col_row(cipherlist):
     """Check that input columns & rows are valid vs. message length."""
-    factors = []
     len_cipher = len(cipherlist)
-    for i in range(2, len_cipher):  # range excludes 1-column ciphers
-        if len_cipher % i == 0:
-            factors.append(i)
-    print("\nLength of cipher = {}".format(len_cipher))
-    print("Acceptable column/row values include: {}".format(factors))
+    factors = [i for i in range(2, len_cipher) if len_cipher % i == 0]
+    print(f"\nLength of cipher = {len_cipher}")
+    print(f"Acceptable column/row values include: {factors}")
     print()
     if ROWS * COLS != len_cipher:
         print("\nError - Input columns & rows not factors of length "
@@ -89,12 +86,15 @@ def key_to_int(key):
     key_int = [int(i) for i in key.split()]
     key_int_lo = min(key_int)
     key_int_hi = max(key_int)
-    if len(key_int) != COLS or key_int_lo < -COLS or key_int_hi > COLS \
-        or 0 in key_int:
-        print("\nError - Problem with key. Terminating.", file=sys.stderr)
-        sys.exit(1)
-    else:
+    if (
+        len(key_int) == COLS
+        and key_int_lo >= -COLS
+        and key_int_hi <= COLS
+        and 0 not in key_int
+    ):
         return key_int
+    print("\nError - Problem with key. Terminating.", file=sys.stderr)
+    sys.exit(1)
 
 def build_matrix(key_int, cipherlist):
     """Turn every n-items in a list into a new item in a list of lists."""
@@ -111,13 +111,13 @@ def build_matrix(key_int, cipherlist):
         stop += ROWS
     return translation_matrix
 
-def decrypt(translation_matrix):   
+def decrypt(translation_matrix):
     """Loop through nested lists popping off last item to a string."""
     plaintext = ''
-    for i in range(ROWS): 
+    for _ in range(ROWS):
         for matrix_col in translation_matrix:
             word = str(matrix_col.pop())
-            plaintext += word + ' '
+            plaintext += f'{word} '
     return plaintext
         
 if __name__ == '__main__':

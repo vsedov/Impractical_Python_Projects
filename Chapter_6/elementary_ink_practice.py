@@ -1,4 +1,5 @@
 """Add code to check blank lines in fake message vs lines in real message."""
+
 import sys
 import docx
 from docx.shared import RGBColor, Pt
@@ -6,16 +7,14 @@ from docx.shared import RGBColor, Pt
 
 # get text from fake message & make each line a list item
 fake_text = docx.Document('fakeMessage.docx')
-fake_list = []
-for paragraph in fake_text.paragraphs:
-    fake_list.append(paragraph.text)
-
+fake_list = [paragraph.text for paragraph in fake_text.paragraphs]
 # get text from real message & make each line a list item
 real_text = docx.Document('realMessageChallenge.docx')
-real_list = []
-for paragraph in real_text.paragraphs:
-    if len(paragraph.text) != 0:  # remove blank lines
-        real_list.append(paragraph.text)
+real_list = [
+    paragraph.text
+    for paragraph in real_text.paragraphs
+    if len(paragraph.text) != 0
+]
 
 # define function to check available hiding space:
 def line_limit(fake, real):
@@ -25,18 +24,14 @@ def line_limit(fake, real):
     NOTE:  need to import 'sys'
 
     """
-    num_blanks = 0
     num_real = 0
-    for line in fake:
-        if line == '':
-            num_blanks += 1
+    num_blanks = sum(1 for line in fake if line == '')
     num_real = len(real)
     diff = num_real - num_blanks
-    print("\nNumber of blank lines in fake message = {}".format(num_blanks))
-    print("Number of lines in real message = {}\n".format(num_real))
+    print(f"\nNumber of blank lines in fake message = {num_blanks}")
+    print(f"Number of lines in real message = {num_real}\n")
     if num_real > num_blanks:
-        print("Fake message needs {} more blank lines."
-              .format(diff), file=sys.stderr)
+        print(f"Fake message needs {diff} more blank lines.", file=sys.stderr)
         sys.exit()
 
 line_limit(fake_list, real_list)

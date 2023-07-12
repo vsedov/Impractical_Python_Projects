@@ -92,14 +92,14 @@ def main():
         try:
             data_list = load_data(filename)
         except IOError as e:
-            print("{}. Try again.".format(e), file=sys.stderr)
+            print(f"{e}. Try again.", file=sys.stderr)
         else:
             break
     data_count, data_pct, total_count = count_first_digits(data_list)
     expected_counts = get_expected_counts(total_count)
-    print("\nobserved counts = {}".format(data_count))
-    print("expected counts = {}".format(expected_counts), "\n")
-    
+    print(f"\nobserved counts = {data_count}")
+    print(f"expected counts = {expected_counts}", "\n")
+
     print("First Digit Probabilities:")
     for i in range(1, 10):
         print("{}: observed: {:.3f}  expected: {:.3f}".

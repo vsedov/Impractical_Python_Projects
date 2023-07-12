@@ -1,4 +1,5 @@
 """Calculate probability of detecting alien radio bubbles in galaxy."""
+
 from random import randint
 from collections import Counter
 import numpy as np
@@ -15,7 +16,7 @@ y = []  # y values for polynomial fit
 for num_civs in range(2, MAX_CIVS + 2, CIV_STEP_SIZE):
     civs_per_vol = num_civs / NUM_EQUIV_VOLUMES
     num_single_civs = 0
-    for trial in range(TRIALS):
+    for _ in range(TRIALS):
         locations = []  # equivalent volumes containing a civilization
         while len(locations) < num_civs:
             location = randint(1, NUM_EQUIV_VOLUMES)
@@ -33,7 +34,7 @@ for num_civs in range(2, MAX_CIVS + 2, CIV_STEP_SIZE):
 
 coefficients = np.polyfit(x, y, 4)  # 4th order polynomial fit
 p = np.poly1d(coefficients)
-print("\n{}".format(p))
+print(f"\n{p}")
 xp = np.linspace(0, 5)
 _ = plt.plot(x, y, '.', xp, p(xp), '-')
 plt.ylim(-0.5, 1.5)

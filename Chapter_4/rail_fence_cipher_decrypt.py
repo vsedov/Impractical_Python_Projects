@@ -38,7 +38,7 @@ def main():
 def prep_ciphertext(ciphertext):
     """Remove whitespace."""
     message = "".join(ciphertext.split())
-    print("\nciphertext = {}".format(ciphertext))
+    print(f"\nciphertext = {ciphertext}")
     return message
 
 def split_rails(message):
@@ -52,13 +52,12 @@ def decrypt(row1, row2):
     """Build list with every other letter in 2 strings & print."""
     plaintext = []
     for r1, r2 in itertools.zip_longest(row1, row2):
-        plaintext.append(r1)
-        plaintext.append(r2)
+        plaintext.extend((r1, r2))
     if None in plaintext:
         plaintext.pop()
-    print("rail 1 = {}".format(row1))
-    print("rail 2 = {}".format(row2))
-    print("\nplaintext = {}".format(''.join(plaintext)))
+    print(f"rail 1 = {row1}")
+    print(f"rail 2 = {row2}")
+    print(f"\nplaintext = {''.join(plaintext)}")
 
 if __name__ == '__main__':
     main()

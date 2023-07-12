@@ -1,4 +1,5 @@
 """Hide a null cipher within a vocabulary list."""
+
 from random import randint
 import string
 import load_dictionary
@@ -6,10 +7,9 @@ import load_dictionary
 # write a short message and use no punctuation or numbers!
 input_message = "Panel at east end of chapel slides"
 
-message = ''
-for char in input_message:
-    if char in string.ascii_letters:
-        message += char
+message = ''.join(
+    char for char in input_message if char in string.ascii_letters
+)
 print(message, "\n")
 message = "".join(message.split())
 
@@ -25,7 +25,7 @@ for letter in message:
         and word not in vocab_list:
             vocab_list.append(word)
             break
-        
+
 if len(vocab_list) < len(message):
     print("Word List is too small. Try larger dictionary or shorter message!")
 else:        

@@ -23,18 +23,19 @@ def find_anagrams(name, word_list):
     name_letter_map = Counter(name)
     anagrams = []
     for word in word_list:
-        test = ''
         word_letter_map = Counter(word.lower())
-        for letter in word:
-            if word_letter_map[letter] <= name_letter_map[letter]:
-                test += letter
+        test = ''.join(
+            letter
+            for letter in word
+            if word_letter_map[letter] <= name_letter_map[letter]
+        )
         if Counter(test) == word_letter_map:
             anagrams.append(word)
     print(*anagrams, sep='\n')
     print()
-    print("Remaining letters = {}".format(name))
-    print("Number of remaining letters = {}".format(len(name)))
-    print("Number of remaining (real word)anagrams = {}".format(len(anagrams)))
+    print(f"Remaining letters = {name}")
+    print(f"Number of remaining letters = {len(name)}")
+    print(f"Number of remaining (real word)anagrams = {len(anagrams)}")
 
 def process_choice(name):
     """Check user choice for validity, return choice & left-over letters."""
@@ -71,15 +72,15 @@ def main():
     while running:
         temp_phrase = phrase.replace(' ', '')
         if len(temp_phrase) < limit:
-            print("Length of anagram phrase = {}".format(len(temp_phrase)))
+            print(f"Length of anagram phrase = {len(temp_phrase)}")
 
             find_anagrams(name, dict_file)
             print("Current anagram phrase =", end=" ")
             print(phrase, file=sys.stderr)
 
             choice, name = process_choice(name)
-            phrase += choice + ' '
-            
+            phrase += f'{choice} '
+
         elif len(temp_phrase) == limit:
             print("\n***** FINISHED!!! *****\n")
             print("Anagram of name =", end=" ")

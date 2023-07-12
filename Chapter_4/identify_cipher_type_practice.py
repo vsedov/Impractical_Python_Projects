@@ -15,8 +15,7 @@ def load(filename):
 try:
     ciphertext = load('cipher_a.txt')
 except IOError as e:
-    print("{}. Terminating program.".format(e),
-          file=sys.stderr)
+    print(f"{e}. Terminating program.", file=sys.stderr)
     sys.exit(1)
 
 # count 6 most-common letters in ciphertext
@@ -29,11 +28,7 @@ print(*six_most_frequent, sep='\n')
 cipher_top_6 = {i[0] for i in six_most_frequent}
 
 TARGET = 'etaoin'
-count = 0
-for letter in TARGET:
-    if letter in cipher_top_6:
-        count += 1
-
+count = sum(1 for letter in TARGET if letter in cipher_top_6)
 if count/len(TARGET) >= CUTOFF:
     print("\nThis ciphertext most-likely produced by a TRANSPOSITION cipher")
 else:

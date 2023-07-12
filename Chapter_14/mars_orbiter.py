@@ -134,8 +134,7 @@ def calc_eccentricity(dist_list):
     """Calculate & return eccentricity from list of radii."""
     apoapsis = max(dist_list)
     periapsis = min(dist_list)
-    eccentricity = (apoapsis - periapsis) / (apoapsis + periapsis)
-    return eccentricity
+    return (apoapsis - periapsis) / (apoapsis + periapsis)
 
 def instruct_label(screen, text, color, x, y):
     """Take screen, list of strings, color, & origin & render text to screen."""
@@ -176,10 +175,10 @@ def cast_shadow(screen):
 def main():
     """Set-up labels & instructions, create objects & run the game loop."""
     pg.init()  # initialize pygame
-    
+
     # set-up display
     os.environ['SDL_VIDEO_WINDOW_POS'] = '700, 100'  # set game window origin
-    screen = pg.display.set_mode((800, 645), pg.FULLSCREEN) 
+    screen = pg.display.set_mode((800, 645), pg.FULLSCREEN)
     pg.display.set_caption("Mars Orbiter")
     background = pg.Surface(screen.get_size())
 
@@ -191,7 +190,7 @@ def main():
         ' Use thrusters to correct to a circular mapping orbit without',
         ' running out of propellant or burning up in the atmosphere.'
         ]
- 
+
     instruct_text1 = [
         'Orbital altitude must be within 69-120 miles',
         'Orbital Eccentricity must be < 0.05',
@@ -210,14 +209,14 @@ def main():
     # instantiate planet and satellite objects
     planet = Planet()
     planet_sprite = pg.sprite.Group(planet)
-    sat = Satellite(background)    
+    sat = Satellite(background)
     sat_sprite = pg.sprite.Group(sat)
 
     # for circular orbit verification
-    dist_list = []  
+    dist_list = []
     eccentricity = 1
     eccentricity_calc_interval = 5  # optimized for 120 mile altitude
-    
+
     # time-keeping
     clock = pg.time.Clock()
     fps = 30
@@ -225,13 +224,13 @@ def main():
 
     # for soil moisture mapping functionality
     mapping_enabled = False
-    
+
     running = True
     while running:
         clock.tick(fps)
         tick_count += 1
         dist_list.append(sat.distance)
-        
+
         # get keyboard input
         for event in pg.event.get():
             if event.type == pg.QUIT:  # close window
@@ -248,7 +247,7 @@ def main():
                     mapping_on(planet)
 
         # get heading & distance to planet & apply gravity               
-        sat.locate(planet)  
+        sat.locate(planet)
         planet.gravity(sat)
 
         # calculate orbital eccentricity
@@ -258,7 +257,7 @@ def main():
 
         # re-blit background for drawing command - prevents clearing path
         screen.blit(background, (0, 0))
-        
+
         # Fuel/Altitude fail conditions
         if sat.fuel <= 0:
             instruct_label(screen, ['Fuel Depleted!'], RED, 340, 195)
@@ -292,16 +291,16 @@ def main():
         box_label(screen, 'Altitude', (240, 20, 160, 20))
         box_label(screen, 'Fuel', (410, 20, 160, 20))
         box_label(screen, 'Eccentricity', (580, 20, 150, 20))
-        
-        box_label(screen, '{:.1f}'.format(sat.dx), (70, 50, 75, 20))     
+
+        box_label(screen, '{:.1f}'.format(sat.dx), (70, 50, 75, 20))
         box_label(screen, '{:.1f}'.format(sat.dy), (150, 50, 80, 20))
         box_label(screen, '{:.1f}'.format(sat.distance), (240, 50, 160, 20))
-        box_label(screen, '{}'.format(sat.fuel), (410, 50, 160, 20))
+        box_label(screen, f'{sat.fuel}', (410, 50, 160, 20))
         box_label(screen, '{:.8f}'.format(eccentricity), (580, 50, 150, 20))
-          
+
         instruct_label(screen, instruct_text1, WHITE, 10, 575)
         instruct_label(screen, instruct_text2, WHITE, 570, 510)
-      
+
         # add terminator & border
         cast_shadow(screen)
         pg.draw.rect(screen, WHITE, (1, 1, 798, 643), 1)

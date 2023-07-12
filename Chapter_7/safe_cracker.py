@@ -4,16 +4,12 @@ from random import randint, randrange
 
 def fitness(combo, attempt):
     """Compare items in two lists and count number of matches."""
-    grade = 0
-    for i, j in zip(combo, attempt):
-        if i == j:
-            grade += 1
-    return grade
+    return sum(1 for i, j in zip(combo, attempt) if i == j)
 
 def main():
     """Enter lock combination & run hill climbing algorithm to find solution."""
     combination = '6822858902'
-    print("Combination = {}".format(combination))
+    print(f"Combination = {combination}")
     # convert combination to list:
     combo = [int(i) for i in combination]
 
@@ -39,8 +35,8 @@ def main():
         count += 1
 
     print()
-    print("Cracked! {}".format(best_attempt), end=' ')
-    print("in {} tries!".format(count))
+    print(f"Cracked! {best_attempt}", end=' ')
+    print(f"in {count} tries!")
 
 if __name__ == '__main__':    
     start_time = time.time()

@@ -63,7 +63,7 @@ def spirals(b, r, rot_fac, fuz_fac, arm):
     for x, y in spiral_stars:
         if arm == 0 and int(x % 2) == 0:
             c.create_oval(x-2, y-2, x+2, y+2, fill='white', outline='')
-        elif arm == 0 and int(x % 2) != 0:
+        elif arm == 0:
             c.create_oval(x-1, y-1, x+1, y+1, fill='white', outline='')
         elif arm == 1:
             c.create_oval(x, y, x, y, fill='white', outline='')
@@ -74,7 +74,7 @@ def star_haze(scalar):
     disc_radius_scaled = galactic disc radius scaled to radio bubble diameter
     scalar = multiplier to vary number of stars posted
     """
-    for i in range(0, disc_radius_scaled * scalar):
+    for _ in range(0, disc_radius_scaled * scalar):
         x, y = polar_coordinates()
         c.create_text(x, y, fill='white', font=('Helvetica', '7'), text='.')
 

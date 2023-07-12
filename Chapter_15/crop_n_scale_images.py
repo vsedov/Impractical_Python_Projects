@@ -42,12 +42,12 @@ def crop_images():
         with Image.open(file) as img:
             gray = img.convert('L')
             bw = gray.point(lambda x: 0 if x < 90 else 255)
-            box = bw.getbbox()       
+            box = bw.getbbox()
             padded_box = (box[0]-20, box[1]-20, box[2]+20, box[3]+20)
             cropped = img.crop(padded_box)
             scaled = ImageOps.fit(cropped, (860, 860),
                                   Image.LANCZOS, 0, (0.5, 0.5))
-            file_name = 'cropped_{}.jpg'.format(file_num)
+            file_name = f'cropped_{file_num}.jpg'
             scaled.save(file_name, "JPEG")
   
 

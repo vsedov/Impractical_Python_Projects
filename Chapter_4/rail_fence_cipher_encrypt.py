@@ -31,22 +31,20 @@ def main():
 def prep_plaintext(plaintext):
     """Remove spaces & leading/trailing whitespace."""
     message = "".join(plaintext.split())
-    message = message.upper()  # convention for ciphertext is uppercase 
-    print("\nplaintext = {}".format(plaintext))
-    return message
+    print(f"\nplaintext = {plaintext}")
+    return message.upper()
 
 def build_rails(message):
     """Build strings with every other letter in a message."""
     evens = message[::2]
     odds = message[1::2]
-    rails = evens + odds
-    return rails
+    return evens + odds
 
 def encrypt(rails):
     """Split letters in ciphertext into chunks of 5 & join to make string."""
     ciphertext = ' '.join([rails[i:i+5] for i in range(0, len(rails),
-                                                       5)]) 
-    print("ciphertext = {}".format(ciphertext))
+                                                       5)])
+    print(f"ciphertext = {ciphertext}")
 
 if __name__ == '__main__':
     main()

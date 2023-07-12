@@ -25,7 +25,7 @@ def solve_null_cipher(message, lookahead):
                 count += 1
             if count == i:
                 plaintext += char
-        print("Using offset of {} after punctuation = {}".format(i, plaintext))
+        print(f"Using offset of {i} after punctuation = {plaintext}")
         print()
 
 def main():
@@ -35,13 +35,12 @@ def main():
     try:
         loaded_message = load_text(filename)
     except IOError as e:
-        print("{}. Terminating program.".format(e), file=sys.stderr)
+        print(f"{e}. Terminating program.", file=sys.stderr)
         sys.exit(1)
     print("\nORIGINAL MESSAGE =")
-    print("{}".format(loaded_message), "\n")
-    print("\nList of punctuation marks to check = {}".
-          format(string.punctuation), "\n")
-    
+    print(f"{loaded_message}", "\n")
+    print(f"\nList of punctuation marks to check = {string.punctuation}", "\n")
+
     # remove whitespace:
     message = ''.join(loaded_message.split())
 
@@ -53,7 +52,7 @@ def main():
             lookahead = int(lookahead)
             break
         else:
-            print("Please input a number.", file=sys.stderr)           
+            print("Please input a number.", file=sys.stderr)
     print()
 
     # run function to decode cipher:

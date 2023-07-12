@@ -13,8 +13,7 @@ def load(file):
 try:
     word_list = load('2of4brif.txt')
 except IOError as e:
-    print("{}\nError opening file. Terminating program.".format(e),
-          file=sys.stderr)
+    print(f"{e}\nError opening file. Terminating program.", file=sys.stderr)
     sys.exit(1)
 
 test_data = []

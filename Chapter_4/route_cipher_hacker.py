@@ -60,13 +60,10 @@ def main():
 
 def validate_col_row(cipherlist):
     """Check that input columns & rows are valid vs. message length."""
-    factors = []
     len_cipher = len(cipherlist)
-    for i in range(2, len_cipher):  # range excludes 1-column ciphers
-        if len_cipher % i == 0:
-            factors.append(i)
-    print("\nLength of cipher = {}".format(len_cipher))
-    print("Acceptable column/row values include: {}".format(factors))
+    factors = [i for i in range(2, len_cipher) if len_cipher % i == 0]
+    print(f"\nLength of cipher = {len_cipher}")
+    print(f"Acceptable column/row values include: {factors}")
     print()
     if ROWS * COLS != len_cipher:
         print("\nError - Input columns & rows not factors of length "
@@ -90,13 +87,13 @@ def decrypt(cipherlist):
             start += ROWS
             stop += ROWS
         # loop through nested lists popping off last item to a new list:
-        for i in range(ROWS):
+        for _ in range(ROWS):
             for matrix_col in translation_matrix:
                 word = str(matrix_col.pop())
-                plaintext += word + ' '
-        print("\nusing key = {}".format(key))
-        print("translated = {}".format(plaintext))
-    print("\nnumber of keys = {}".format(len(col_combos)))
+                plaintext += f'{word} '
+        print(f"\nusing key = {key}")
+        print(f"translated = {plaintext}")
+    print(f"\nnumber of keys = {len(col_combos)}")
 
 if __name__ == '__main__':
     main()

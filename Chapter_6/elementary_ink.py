@@ -1,27 +1,25 @@
 """ Hide a message in a docx document using a white font."""
+
 import docx
 from docx.shared import RGBColor, Pt
 
 # get text from a fake message & make each line a list item
 fake_text = docx.Document('fakeMessage.docx')
-fake_list = []
-for paragraph in fake_text.paragraphs:
-    fake_list.append(paragraph.text)
-
+fake_list = [paragraph.text for paragraph in fake_text.paragraphs]
 # get text from real message & make each line a list item
 real_text = docx.Document('realMessage_Vig.docx')
-real_list = []
-for paragraph in real_text.paragraphs:
-    if len(paragraph.text) != 0:  # remove blank lines
-        real_list.append(paragraph.text)
-
+real_list = [
+    paragraph.text
+    for paragraph in real_text.paragraphs
+    if len(paragraph.text) != 0
+]
 # load template that sets style, font, margins, etc.
 doc = docx.Document('template.docx') 
 
 # add letterhead:
 doc.add_heading('Morland Holmes', 0)
 subtitle = doc.add_heading('Global Consultanting & Negotiations', 1)
-subtitle.alignment = 1 
+subtitle.alignment = 1
 doc.add_heading('', 1)
 doc.add_paragraph('December 17, 2015')
 doc.add_paragraph('')

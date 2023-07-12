@@ -1,4 +1,5 @@
 """Average pixels in a series of images to produce a single stacked image."""
+
 import os
 from PIL import Image
 
@@ -23,7 +24,7 @@ ave_red = [round(sum(x) / len(red_data)) for x in zip(*red_data)]
 ave_blue = [round(sum(x) / len(blue_data)) for x in zip(*blue_data)]
 ave_green = [round(sum(x) / len(green_data)) for x in zip(*green_data)]
 
-merged_data = [(x) for x in zip(ave_red, ave_green, ave_blue)]
+merged_data = list(zip(ave_red, ave_green, ave_blue))
 stacked = Image.new('RGB', (img_size))
 stacked.putdata(merged_data)
 stacked.show()

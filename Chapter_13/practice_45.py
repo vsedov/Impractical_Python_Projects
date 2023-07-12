@@ -41,10 +41,7 @@ class Particle(pg.sprite.Sprite):
         """Calculate particle vector at launch."""
         angles = [65, 55, 45, 35, 25]  # 90 is vertical
         orient = random.choice(angles)
-        if orient == 45:
-            self.color = WHITE
-        else:
-            self.color = GRAY
+        self.color = WHITE if orient == 45 else GRAY
         radians = math.radians(orient)
         self.dx = self.vel * math.cos(radians)
         self.dy = -self.vel * math.sin(radians)  # negative as y increases down

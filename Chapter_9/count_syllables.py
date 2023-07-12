@@ -37,8 +37,7 @@ def main():
             sys.exit()
         try:
             num_syllables = count_syllables(word)
-            print("number of syllables in {} is: {}"
-                  .format(word, num_syllables))
+            print(f"number of syllables in {word} is: {num_syllables}")
             print()
         except KeyError:
             print("Word not found.  Try again.\n", file=sys.stderr)

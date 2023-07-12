@@ -7,17 +7,13 @@ def read_to_list(file_name):
     """Open a file of data in percent, convert to decimal & return a list."""
     with open(file_name) as in_file:
         lines = [float(line.strip()) for line in in_file]
-        decimal = [round(line / 100, 5) for line in lines]
-        return decimal
+        return [round(line / 100, 5) for line in lines]
 
 def default_input(prompt, default=None):
     """Allow use of default values in input"""
-    prompt = '{} [{}]: '.format(prompt, default)
+    prompt = f'{prompt} [{default}]: '
     response = input(prompt)
-    if not response and default:
-        return default
-    else:
-        return response
+    return default if not response and default else response
 
 # load data files with original data in percent form
 print("\nNote: Input data should be in percent, not decimal!\n")
@@ -28,7 +24,7 @@ try:
     blend_50_50 = read_to_list('S-B_blend_1926-2013_pct.txt')
     infl_rate = read_to_list('annual_infl_rate_1926-2013_pct.txt')
 except IOError as e:
-    print("{}. \nTerminating program.".format(e), file=sys.stderr)
+    print(f"{e}. \nTerminating program.", file=sys.stderr)
     sys.exit(1)
 
 # get user input; use dictionary for investment-type arguments   
@@ -77,7 +73,7 @@ while not most_likely_years.isdigit():
 max_years = default_input("Input maximum years in retirement: \n", '40')
 while not max_years.isdigit():
     max_years = input("Invalid input! Input integer only: ")
-    
+
 num_cases = default_input("Input number of cases to run: \n", '50000')
 while not num_cases.isdigit():
     num_cases = input("Invalid input! Input integer only: ")
@@ -97,11 +93,11 @@ def montecarlo(returns):
 
     while case_count < int(num_cases):
         investments = int(start_value)
-        start_year = random.randrange(0, len(returns))        
+        start_year = random.randrange(0, len(returns))
         duration = int(random.triangular(int(min_years), int(max_years),
-                                         int(most_likely_years)))       
-        end_year = start_year + duration 
-        lifespan = [i for i in range(start_year, end_year)]
+                                         int(most_likely_years)))
+        end_year = start_year + duration
+        lifespan = list(range(start_year, end_year))
         bankrupt = 'no'
 
         # build temporary lists for each case
@@ -110,7 +106,7 @@ def montecarlo(returns):
         for i in lifespan:
             lifespan_returns.append(returns[i % len(returns)])
             lifespan_infl.append(infl_rate[i % len(infl_rate)])
-            
+
         # loop through each year of retirement for each case run
         for index, i in enumerate(lifespan_returns):
             infl = lifespan_infl[index]
@@ -123,11 +119,7 @@ def montecarlo(returns):
                 withdraw_infl_adj_1 = int(withdraw_infl_adj_1 * (1 + infl))
                 withdraw_infl_adj_2 = int(withdraw_infl_adj_2 * (1 + infl))
 
-            if index < 5:
-                withdraw_infl_adj = withdraw_infl_adj_1
-            else:
-                withdraw_infl_adj = withdraw_infl_adj_2
-
+            withdraw_infl_adj = withdraw_infl_adj_1 if index < 5 else withdraw_infl_adj_2
             investments -= withdraw_infl_adj
             investments = int(investments * (1 + i))
 
@@ -140,7 +132,7 @@ def montecarlo(returns):
             bankrupt_count += 1
         else:
             outcome.append(investments)
-            
+
         case_count += 1
 
     return outcome, bankrupt_count
@@ -150,17 +142,18 @@ def bankrupt_prob(outcome, bankrupt_count):
     total = len(outcome)
     odds = round(100 * bankrupt_count / total, 1)
 
-    print("\nInvestment type: {}".format(invest_type))
+    print(f"\nInvestment type: {invest_type}")
     print("Starting value: ${:,}".format(int(start_value)))
     print("Annual withdrawal first 5 yrs: ${:,}".format(int(withdrawal_1)))
-    print("Annual withdrawal after 5 yrs: ${:,}".format(int(withdrawal_2))) 
-    print("Years in retirement (min-ml-max): {}-{}-{}"
-          .format(min_years, most_likely_years, max_years))
+    print("Annual withdrawal after 5 yrs: ${:,}".format(int(withdrawal_2)))
+    print(
+        f"Years in retirement (min-ml-max): {min_years}-{most_likely_years}-{max_years}"
+    )
     print("Number of runs: {:,}\n".format(len(outcome)))
-    print("Odds of running out of money: {}%\n".format(odds))
+    print(f"Odds of running out of money: {odds}%\n")
     print("Average outcome: ${:,}".format(int(sum(outcome) / total)))
-    print("Minimum outcome: ${:,}".format(min(i for i in outcome)))
-    print("Maximum outcome: ${:,}".format(max(i for i in outcome)))
+    print("Minimum outcome: ${:,}".format(min(outcome)))
+    print("Maximum outcome: ${:,}".format(max(outcome)))
 
     return odds
 
@@ -171,8 +164,10 @@ def main():
 
     # generate matplotlib bar chart 
     plotdata = outcome[:3000]  # only plot first 3000 runs
-    plt.figure('Outcome by Case (showing first {} runs)'.format(len(plotdata)),
-               figsize=(16, 5))  # size is width, height in inches
+    plt.figure(
+        f'Outcome by Case (showing first {len(plotdata)} runs)',
+        figsize=(16, 5),
+    )
     index = [i + 1 for i in range(len(plotdata))]
     plt.bar(index, plotdata, color='black')
     plt.xlabel('Simulated Lives', fontsize=18)
@@ -181,8 +176,11 @@ def main():
     ax = plt.gca()
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}"
                                                          .format(int(x))))
-    plt.title('Probability of running out of money = {}%'.format(odds),
-              fontsize=20, color='red')
+    plt.title(
+        f'Probability of running out of money = {odds}%',
+        fontsize=20,
+        color='red',
+    )
     plt.show()
 
 # run program

@@ -3,6 +3,7 @@
 Requires load_dictionary.py module to load an English dictionary file.
 
 """
+
 import re
 from collections import defaultdict
 from itertools import permutations
@@ -20,17 +21,17 @@ for perm in perms:
     for i in range(0, len(perm) - 1):
         digrams.add(perm[i] + perm[i + 1])
 print(*digrams, sep='\n')
-print("\nNumber of digrams = {}\n".format(len(digrams)))
+print(f"\nNumber of digrams = {len(digrams)}\n")
 
 # use regular expressions to find repeating digrams in a word
 mapped = defaultdict(int)
 for word in word_list:
     word = word.lower()
     for digram in digrams:
-        for m in re.finditer(digram, word):
+        for _ in re.finditer(digram, word):
             mapped[digram] += 1
 
 print("digram frequency count:")
 count = 0
-for k in mapped:
-    print("{} {}".format(k, mapped[k]))
+for k, v in mapped.items():
+    print(f"{k} {v}")

@@ -11,13 +11,11 @@ logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 def load_training_file(file):
     """Return a text file as a string."""
     with open(file) as f:
-        raw_haiku = f.read()
-        return raw_haiku
+        return f.read()
 
 def prep_training(raw_haiku):
     """Load string, remove newline, split words on spaces, and return list."""
-    corpus = raw_haiku.replace('\n', ' ').split()
-    return corpus
+    return raw_haiku.replace('\n', ' ').split()
 
 def map_word_to_word(corpus):
     """Load list & use dictionary to map word to word that follows."""
@@ -37,7 +35,7 @@ def map_2_words_to_word(corpus):
     dict2_to_1 = defaultdict(list)
     for index, word in enumerate(corpus):
         if index < limit:
-            key = word + ' ' + corpus[index + 1]
+            key = f'{word} {corpus[index + 1]}'
             suffix = corpus[index + 2]
             dict2_to_1[key].append(suffix)
     logging.debug("map_2_words_to_word results for \"sake jug\" = %s\n",
@@ -113,19 +111,19 @@ def haiku_line(suffix_map_1, suffix_map_2, corpus, end_prev_line, target_syls):
 
     while True:
         logging.debug("line = %s\n", line)
-        prefix = current_line[-2] + ' ' + current_line[-1]
+        prefix = f'{current_line[-2]} {current_line[-1]}'
         word_choices = word_after_double(prefix, suffix_map_2,
                                          line_syls, target_syls)
         while len(word_choices) == 0:
             index = random.randint(0, len(corpus) - 2)
-            prefix = corpus[index] + ' ' + corpus[index + 1]
+            prefix = f'{corpus[index]} {corpus[index + 1]}'
             logging.debug("new random prefix = %s", prefix)
             word_choices = word_after_double(prefix, suffix_map_2,
                                              line_syls, target_syls)
         word = random.choice(word_choices)
         num_syls = count_syllables(word)
         logging.debug("word & syllables = %s %s", word, num_syls)
-        
+
         if line_syls + num_syls > target_syls:
             continue
         elif line_syls + num_syls < target_syls:
@@ -138,11 +136,7 @@ def haiku_line(suffix_map_1, suffix_map_2, corpus, end_prev_line, target_syls):
     end_prev_line = []
     end_prev_line.extend(current_line[-2:])
 
-    if line == '1':
-        final_line = current_line[:]
-    else:
-        final_line = current_line[2:]
-
+    final_line = current_line[:] if line == '1' else current_line[2:]
     return final_line, end_prev_line
 
 
@@ -151,7 +145,7 @@ def main():
     intro = """\n
     A thousand monkeys at a thousand typewriters...
     or one computer...can sometimes produce a haiku.\n"""
-    print("{}".format(intro))
+    print(f"{intro}")
 
     raw_haiku = load_training_file("train.txt")
     corpus = prep_training(raw_haiku)

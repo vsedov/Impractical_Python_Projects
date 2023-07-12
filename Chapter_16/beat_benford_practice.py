@@ -75,20 +75,20 @@ def main():
     # compare old and new vote counts & totals in tabular form
     # switch-out "Trump" and "Clinton" as necessary
     for i in range(0, len(t_votes)):
-        print("old Trump: {} \t new Trump: {} \t old Clinton: {} \t " \
-              "new Clinton: {}".
-              format(t_votes[i], new_t_votes[i], c_votes[i], new_c_votes[i]))              
+        print(
+            f"old Trump: {t_votes[i]} \t new Trump: {new_t_votes[i]} \t old Clinton: {c_votes[i]} \t new Clinton: {new_c_votes[i]}"
+        )
         print("-" * 95)
     print("TOTALS:")
     print("old Trump: {:,} \t new Trump: {:,} \t old Clinton: {:,}  " \
           "new Clinton: {:,}".format(sum(t_votes), sum(new_t_votes),
                                      sum(c_votes), sum(new_c_votes)))
-                                   
+
     # write-out a text file to use as input to benford.py program
     # this program will check conformance of faked votes to Benford's Law
     with open('fake_Illinois_counts.txt', 'w') as f:
         for count in fake_counts:
-            f.write("{}\n".format(count))
+            f.write(f"{count}\n")
     
 
 if __name__ == '__main__':

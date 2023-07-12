@@ -11,11 +11,11 @@ filename = input("\nEnter full filename for message to translate: ")
 try:
     loaded_message = load_text(filename)
 except IOError as e:
-    print("{}. Terminating program.".format(e), file=sys.stderr)
+    print(f"{e}. Terminating program.", file=sys.stderr)
     sys.exit(1)
 
 # check loaded message & # of lines
-print("\nORIGINAL MESSAGE = {}\n".format(loaded_message))
+print(f"\nORIGINAL MESSAGE = {loaded_message}\n")
 
 # convert message to list and get length
 message = loaded_message.split()
@@ -26,16 +26,16 @@ increment = int(input("Input max word & letter position to \
 check (e.g., every 1 of 1, 2 of 2, etc.): "))
 print()
 
-# find letters at designated intervals               
+# find letters at designated intervals
 for i in range(1, increment + 1):
-    print("\nUsing increment letter {} of word {}".format(i, i))
+    print(f"\nUsing increment letter {i} of word {i}")
     print()
     count = i - 1
     location = i - 1
     for index, word in enumerate(message):
         if index == count:
             if location < len(word):
-                print("letter = {}".format(word[location]))
+                print(f"letter = {word[location]}")
                 count += i
             else:
                 print("Interval doesn't work", file=sys.stderr)

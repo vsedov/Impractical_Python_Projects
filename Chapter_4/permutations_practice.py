@@ -12,6 +12,7 @@ Returns:
 route cipher encryption direction
 
 """
+
 import math
 from itertools import permutations, product
 
@@ -26,8 +27,8 @@ num_cols = 4
 
 
 # generate listing of individual column numbers
-columns = [x for x in range(1, num_cols+1)]
-print("columns = {}".format(columns))
+columns = list(range(1, num_cols+1))
+print(f"columns = {columns}")
 
 # build list of lists of column number combinations
 # itertools product computes the cartesian product of input iterables 
@@ -35,12 +36,13 @@ def perms(columns):
     """Take number of columns integer & generate pos & neg permutations."""
     results = []
     for perm in permutations(columns):
-        for signs in product([-1, 1], repeat=len(columns)):
-            results.append([i*sign for i, sign in zip(perm, signs)])
+        results.extend(
+            [i * sign for i, sign in zip(perm, signs)]
+            for signs in product([-1, 1], repeat=len(columns))
+        )
     return results
 
 col_combos = perms(columns)
 print(*col_combos, sep="\n")  # comment-out for num_cols > 4!
-print("Factorial of num_cols without negatives = {}"
-      .format(math.factorial(num_cols)))
-print("Number of column combinations = {}".format(len(col_combos)))
+print(f"Factorial of num_cols without negatives = {math.factorial(num_cols)}")
+print(f"Number of column combinations = {len(col_combos)}")

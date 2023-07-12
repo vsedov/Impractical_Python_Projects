@@ -1,4 +1,5 @@
 """Remove single-letter words from list if not 'a' or 'i'."""
+
 word_list = ['a', 'nurses', 'i', 'stack', 'b', 'c', 'cat']
 word_list_clean = []
 
@@ -13,4 +14,4 @@ for word in word_list:
     else:
         continue
 
-print("{}".format(word_list_clean))
+print(f"{word_list_clean}")

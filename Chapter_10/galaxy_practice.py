@@ -1,4 +1,5 @@
 """Use spiral formula to build galaxy display."""
+
 import math
 from random import randint
 import tkinter
@@ -25,7 +26,7 @@ for x, y in spiral_stars:
     oval_size = randint(1, 3)
     c.create_oval(x-oval_size, y-oval_size, x+oval_size, y+oval_size,
                   fill='white', outline='')
-        
+
 # build wisps
 wisps = []
 for i in range(2000):
@@ -40,10 +41,10 @@ for x, y in spiral_stars:
     if h < 350:
         wisps.append((x, y))
         c.create_oval(x-1, y-1, x+1, y+1, fill='white', outline='')          
-    
+
 # build galactic core 
 core = []
-for i in range(900):
+for _ in range(900):
     x = randint(-core_diameter, core_diameter)
     y = randint(-core_diameter, core_diameter)
     h = math.sqrt(x**2 + y**2)
@@ -57,5 +58,5 @@ for i in range(900):
         oval_size = randint(0, 2)
         c.create_oval(x-oval_size, y-oval_size, x+oval_size, y+oval_size,
                       fill='white', outline='')
-    
+
 root.mainloop()

@@ -39,8 +39,8 @@ def round_civ_locs(civ_locs):
     """Round xyz locations and return list of rounded locations."""
     # convert radius to cubic dimensions:
     detect_distance = round((4 / 3 * math.pi * DETECTION_RADIUS**3)**(1/3))
-    print("\ndetection radius = {} LY".format(DETECTION_RADIUS))
-    print("cubic detection distance = {} LY".format(detect_distance))
+    print(f"\ndetection radius = {DETECTION_RADIUS} LY")
+    print(f"cubic detection distance = {detect_distance} LY")
 
     # round civilization xyz to detection distance
     civ_locs_rounded = []
@@ -69,17 +69,16 @@ def main():
     civ_locs = distribute_civs()
     civ_locs_rounded = round_civ_locs(civ_locs)
     overlap_rollup, detection_prob = calc_prob_of_detection(civ_locs_rounded)
-    print("length pre-rounded civ_locs = {}".format(len(civ_locs)))
-    print("length of rounded civ_locs_rounded = {}"
-          .format(len(civ_locs_rounded)))
-    print("overlap_rollup = {}\n".format(overlap_rollup))
+    print(f"length pre-rounded civ_locs = {len(civ_locs)}")
+    print(f"length of rounded civ_locs_rounded = {len(civ_locs_rounded)}")
+    print(f"overlap_rollup = {overlap_rollup}\n")
     print("probability of detection = {0:.3f}".format(detection_prob))
 
     # QC step to check rounding
     print("\nFirst 3 locations pre- and post-rounding:\n")
     for i in range(3):
-        print("pre-round: {}".format(civ_locs[i]))
-        print("post-round: {} \n".format(civ_locs_rounded[i]))
+        print(f"pre-round: {civ_locs[i]}")
+        print(f"post-round: {civ_locs_rounded[i]} \n")
 
 
 if __name__ == '__main__':
